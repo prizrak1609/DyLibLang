@@ -84,7 +84,7 @@
           "name": "library",
           "content": {
             "type": "SYMBOL",
-            "name": "library_identifier"
+            "name": "_variable_identifier"
           }
         }
       ]
@@ -139,11 +139,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "identifier"
+          "name": "number"
         },
         {
           "type": "SYMBOL",
-          "name": "number"
+          "name": "identifier"
         }
       ]
     },
@@ -250,8 +250,7 @@
                     "value": "-"
                   },
                   {
-                    "type": "STRING",
-                    "value": "+"
+                    "type": "BLANK"
                   }
                 ]
               },
@@ -272,8 +271,7 @@
                     "value": "-"
                   },
                   {
-                    "type": "STRING",
-                    "value": "+"
+                    "type": "BLANK"
                   }
                 ]
               },
@@ -586,8 +584,7 @@
   "precedences": [],
   "externals": [],
   "inline": [
-    "value_declaration",
-    "type"
+    "value_declaration"
   ],
   "supertypes": [
     "statement"

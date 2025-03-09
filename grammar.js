@@ -20,8 +20,7 @@ module.exports = grammar({
   ],
 
   inline: $ => [
-    $.value_declaration,
-    $.type
+    $.value_declaration
   ],
 
   rules: {
@@ -42,7 +41,7 @@ module.exports = grammar({
 
     unload_statement: $ => seq(
       'unload',
-      field('library', $.library_identifier)
+      field('library', $._variable_identifier)
     ),
 
     variable_declaration: $ => seq(
@@ -56,8 +55,8 @@ module.exports = grammar({
     value_declaration: $ => choice(
       $.function_call,
       $.function_reference,
-      $.identifier,
-      $.number
+      $.number,
+      $.identifier
     ),
 
     function_call: $ => seq(
@@ -78,11 +77,11 @@ module.exports = grammar({
 
     number: $ => token(choice(
       seq(
-        choice('-', '+'),
+        optional('-'),
         /[0-9]+/
       ),
       seq(
-        choice('-', '+'),
+          optional('-'),
         /[0-9]+\.[0-9]+/
       )
     )),
