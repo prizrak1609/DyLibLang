@@ -1,0 +1,10 @@
+services:
+  compiler:
+    build:
+      context: .
+      dockerfile: DEV.Dockerfile
+    init: true
+    ports:
+      - "2222:22"
+    volumes:
+      - ./:/DyLibLang
