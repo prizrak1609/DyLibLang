@@ -1,0 +1,36 @@
+{
+  "name": "tree-sitter-dyliblang",
+  "version": "0.0.1",
+  "description": "Tree-sitter grammar for DyLibLang",
+  "scripts": {
+    "test": "tree-sitter test",
+    "start": "tree-sitter build --wasm && tree-sitter playground",
+    "tags": "tree-sitter tags test.dyliblang",
+    "run": "clear && tree-sitter generate && tree-sitter parse test.dyliblang --debug"
+  },
+  "keywords": [
+    "tree-sitter",
+    "parser",
+    "DyLibLang"
+  ],
+  "main": "bindings/node",
+  "types": "bindings/node",
+  "files": [
+    "grammar.js",
+    "tree-sitter.json",
+    "binding.gyp",
+    "prebuilds/**",
+    "bindings/node/*",
+    "queries/*",
+    "src/**",
+    "*.wasm"
+  ],
+  "author": "Dmytro Hubatenko",
+  "license": "MIT",
+  "dependencies": {
+    "node-addon-api": "^8.3.1"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "^0.24.5"
+  }
+}

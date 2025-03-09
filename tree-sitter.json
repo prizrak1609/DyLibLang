@@ -1,0 +1,37 @@
+{
+  "grammars": [
+    {
+      "name": "dyliblang",
+      "camelcase": "DyLibLang",
+      "scope": "source.dyliblang",
+      "path": ".",
+      "file-types": [
+        "dyliblang",
+        "dylib"
+      ],
+      "injection-regex": "^dyliblang$"
+    }
+  ],
+  "metadata": {
+    "version": "0.0.0",
+    "license": "MIT",
+    "description": "Parser for DyLibLang language",
+    "authors": [
+      {
+        "name": "Dmytro Hubatenko",
+        "email": "gubatenkod@gmail.com"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/prizrak1609/DyLibLang"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "go": true,
+    "node": true,
+    "python": true,
+    "rust": true,
+    "swift": true
+  }
+}
