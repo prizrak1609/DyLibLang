@@ -1,0 +1,29 @@
+
+#include <dlfcn.h>
+#include <string>
+#include <functional>
+#include <iostream>
+
+int main() {
+void* lib_name = dlopen("lib.do", RTLD_LAZY);
+int variable = *(int*)(dlsym(lib_name, "symbolic_variable_name"));
+std::string variablestr = *(std::string*)(dlsym(lib_name, "symbolic_string_variable_name"));
+int varnum = 5;
+void(function*)(int) = (void(*)(int))(dlsym(lib_name, "symbolic_function_name"));
+std::cout << variable << std::endl;
+std::cout << variablestr << std::endl;
+std::cout << varnum << std::endl;
+void* lib1 = dlopen("lib1.so", RTLD_LAZY);
+int some_variable_with_value_name = *(int*)(dlsym(lib1, "some_variable_with_value_name"));
+function(some_variable_with_value_name)
+void(lib1func*)(void(*)(int)) = (void(*)(void(*)(int)))(dlsym(lib1, "function"));
+lib1func(function)
+int(sum_function*)(int, int) = (int(*)(int, int))(dlsym(lib1, "sum_function"));
+int result = sum_function(variable, some_variable_with_value_name);
+function(result)
+std::cout << result << std::endl;
+dlclose(lib_name);
+dlclose(lib1);
+
+return 0;
+}
