@@ -20,7 +20,7 @@ module.exports = grammar({
   ],
 
   inline: $ => [
-    $.value_declaration
+      $.cpp_type
   ],
 
   rules: {
@@ -30,7 +30,13 @@ module.exports = grammar({
       $.load_statement,
       $.unload_statement,
       $.variable_declaration,
-      $.function_call
+      $.function_call,
+      $.print_statement
+    ),
+
+    print_statement: $ => seq(
+        'print',
+        field('value', $.value_declaration)
     ),
 
     load_statement: $ => seq(
@@ -70,9 +76,9 @@ module.exports = grammar({
     ),
 
     function_reference: $ => seq(
-      field('function_name', $._function_identifier),
+      field('lib_name', $.identifier),
       '.',
-      field('symbol', $._symbol_identifier)
+      field('function', $._function_identifier)
     ),
 
     number: $ => token(choice(
@@ -114,8 +120,8 @@ module.exports = grammar({
 
     cpp_type: $ => seq(
       'std',
-      '::',
-      $._cpp_type
+        '::',
+        $._cpp_type
     ),
 
     function_type: $ => seq(
@@ -134,7 +140,6 @@ module.exports = grammar({
     _alias_identifier: $ => alias($.identifier, $.alias_identifier),
     _variable_identifier: $ => alias($.identifier, $.variable_identifier),
     _function_identifier: $ => alias($.identifier, $.function_identifier),
-    _symbol_identifier: $ => alias($.identifier, $.symbol_identifier),
     
     _cpp_type: $ => alias($.identifier, $.cpp_type),
     _argument_type: $ => alias($.type, $.argument_type),

@@ -5,22 +5,22 @@
 
 std::string UnloadNode::toString() {
     std::stringstream ss;
-    ss << "UnloadNode(lib name: " << libName << ")";
+    ss << "UnloadNode(lib name:)";
 
     return ss.str();
 }
 
-ASTNode * UnloadNode::parse(TSNode &node, std::string_view code) {
-    auto result = new UnloadNode();
+std::string UnloadNode::parse(TSNode &node, std::string_view code) {
+    std::string libName;
 
     auto children = getChildren(node);
-    std::for_each(children.begin(), children.end(), [result, code](TSNode &child) {
+    std::for_each(children.begin(), children.end(), [&libName, code](TSNode &child) {
         if (strncmp(ts_node_type(child), "variable_identifier", strlen("variable_identifier")) == 0) {
             auto start = ts_node_start_byte(child);
             auto end = ts_node_end_byte(child);
-            result->libName = code.substr(start, end - start);
+            libName = code.substr(start, end - start);
         }
     });
 
-    return result;
+    return "dlclose(" + libName + ");";
 }

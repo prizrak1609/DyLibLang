@@ -3,13 +3,16 @@
 
 #include "ASTNode.h"
 #include "tree_sitter/api.h"
-#include <llvm/IR/Type.h>
 
 struct TypeNode : public ASTNode {
-    llvm::Type* type;
+    enum class Type {
+        plain,
+        cpp,
+        function
+    };
 
     std::string toString() override;
-    static ASTNode* parse(TSNode& node, std::string_view code);
+    static std::string parse(TSNode& node, std::string_view code, Type& type, const std::string& name = "");
 };
 
 #endif //TYPENODE_H

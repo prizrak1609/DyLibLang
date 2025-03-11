@@ -36,7 +36,13 @@ add_executable(DyLibLang src/main.cpp
         src/ast/TypeNode.cpp
         src/ast/TypeNode.h
         src/ast/ValueNode.cpp
-        src/ast/ValueNode.h)
+        src/ast/ValueNode.h
+        src/ast/PrintNode.cpp
+        src/ast/PrintNode.h
+        src/ast/FunctionType.cpp
+        src/ast/FunctionType.h
+        src/ast/FunctionReference.cpp
+        src/ast/FunctionReference.h)
 
 add_dependencies(DyLibLang tree-sitter)
 

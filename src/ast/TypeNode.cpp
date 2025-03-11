@@ -4,39 +4,32 @@
 #include <functional>
 #include <cstring>
 #include <iostream>
-
-using namespace llvm;
+#include "FunctionType.h"
 
 std::string TypeNode::toString() {
-    std::stringstream ss;
-    ss << "TypeNode( ";
-
-    std::string llvmStr;
-
-    if (type) {
-        raw_string_ostream out(llvmStr);
-        type->print(out);
-    }
-
-    ss << llvmStr << " )";
-
-    return ss.str();
+    return "";
 }
 
-ASTNode * TypeNode::parse(TSNode &node, std::string_view code) {
+std::string TypeNode::parse(TSNode &node, std::string_view code, Type& type, const std::string& name) {
+    std::string result;
 
     std::vector<TSNode> children = getChildren(node);
-
-    std::for_each(children.begin(), children.end(), [](TSNode &child) {
+    std::for_each(children.begin(), children.end(), [&type, &result, &name, code](TSNode &child) {
         if (strncmp(ts_node_type(child), "function_type", strlen("function_type")) == 0) {
-            // skip for now
-        } else
-        if (strncmp(ts_node_type(child), "cpp_type", strlen("cpp_type")) == 0) {
-            // skip for now
+            result = FunctionType::parse(child, code, name);
+            type = Type::function;
+        } else if (strncmp(ts_node_type(child), "cpp_type", strlen("cpp_type")) == 0) {
+            auto start = ts_node_start_byte(child);
+            auto end = ts_node_end_byte(child);
+            result = "std::" + std::string(code.substr(start, end - start));
+            type = Type::cpp;
         } else {
-            // plain type
+            auto start = ts_node_start_byte(child);
+            auto end = ts_node_end_byte(child);
+            result = code.substr(start, end - start);
+            type = Type::plain;
         }
     });
 
-    return new TypeNode();
+    return result;
 }

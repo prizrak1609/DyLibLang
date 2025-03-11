@@ -27,6 +27,27 @@
         {
           "type": "SYMBOL",
           "name": "function_call"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "print_statement"
+        }
+      ]
+    },
+    "print_statement": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "print"
+        },
+        {
+          "type": "FIELD",
+          "name": "value",
+          "content": {
+            "type": "SYMBOL",
+            "name": "value_declaration"
+          }
         }
       ]
     },
@@ -214,10 +235,10 @@
       "members": [
         {
           "type": "FIELD",
-          "name": "function_name",
+          "name": "lib_name",
           "content": {
             "type": "SYMBOL",
-            "name": "_function_identifier"
+            "name": "identifier"
           }
         },
         {
@@ -226,10 +247,10 @@
         },
         {
           "type": "FIELD",
-          "name": "symbol",
+          "name": "function",
           "content": {
             "type": "SYMBOL",
-            "name": "_symbol_identifier"
+            "name": "_function_identifier"
           }
         }
       ]
@@ -495,15 +516,6 @@
       "named": true,
       "value": "function_identifier"
     },
-    "_symbol_identifier": {
-      "type": "ALIAS",
-      "content": {
-        "type": "SYMBOL",
-        "name": "identifier"
-      },
-      "named": true,
-      "value": "symbol_identifier"
-    },
     "_cpp_type": {
       "type": "ALIAS",
       "content": {
@@ -584,7 +596,7 @@
   "precedences": [],
   "externals": [],
   "inline": [
-    "value_declaration"
+    "cpp_type"
   ],
   "supertypes": [
     "statement"

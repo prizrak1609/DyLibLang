@@ -13,6 +13,7 @@
 #include "ast/FunctionCallNode.h"
 #include "ast/UnloadNode.h"
 #include "ast/VariableNode.h"
+#include "ast/PrintNode.h"
 
 extern "C" const TSLanguage *tree_sitter_dyliblang();
 using namespace llvm;
@@ -34,21 +35,28 @@ std::string readFile(std::filesystem::path path)
     return result;
 }
 
-ASTNode* parseNode(TSNode &node, std::string_view code) {
-    auto astFunction = StringSwitch<std::function<ASTNode*(TSNode&, std::string_view)>>(ts_node_type(node))
+void writeToFile(std::filesystem::path path, std::string_view text) {
+    auto outPath = path.replace_extension("out");
+    std::cout << outPath << std::endl;
+    std::ofstream f(outPath, std::ios::binary | std::ios::out);
+
+    f.seekp(0, std::ios_base::end);
+
+    f.write(text.data(), text.size());
+
+    f.flush();
+}
+
+std::string parseNode(TSNode &node, std::string_view code) {
+    auto astFunction = StringSwitch<std::function<std::string(TSNode&, std::string_view)>>(ts_node_type(node))
         .Case("load_statement", LoadLibNode::parse)
         .Case("variable_declaration", VariableNode::parse)
         .Case("function_call", FunctionCallNode::parse)
+        .Case("print_statement", PrintNode::parse)
         .Case("unload_statement", UnloadNode::parse)
-        .Default([](TSNode&, std::string_view){ return nullptr; });
+        .Default([](TSNode&, std::string_view){ return ""; });
 
     return astFunction(node, code);
-}
-
-void generateCode(const std::vector<ASTNode*> &nodes) {
-    for (ASTNode* node : nodes) {
-        std::cout << node->toString() << "\n";
-    }
 }
 
 int main(int argc, char **argv) {
@@ -70,20 +78,28 @@ int main(int argc, char **argv) {
 
     auto nodesCount = ts_node_child_count(root);
 
-    std::vector<ASTNode*> nodes;
+    std::string resultCode = R"(
+#include <dlfcn.h>
+#include <string>
+#include <functional>
+#include <iostream>
+
+int main() {
+)";
     for (uint32_t i = 0; i < nodesCount; i++) {
         TSNode child = ts_node_child(root, i);
         auto node = parseNode(child, code);
-        if (node) {
-            nodes.push_back(node);
+        if (!node.empty()) {
+            resultCode += node + "\n";
         }
     }
 
-    generateCode(nodes);
+    resultCode += R"(
+return 0;
+}
+)";
 
-    for (auto node :  nodes) {
-        delete node;
-    }
+    writeToFile(src, resultCode);
 
     ts_tree_delete(tree);
     ts_parser_delete(parser);
