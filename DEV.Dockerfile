@@ -14,7 +14,7 @@ RUN apt-get -y update \
     && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_21.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list \
     && apt-get -y update \
     && apt-get install -y nodejs \
-    && npm install -g tree-sitter-cli@0.24.5 node-addon-api@8.3.1 \
+    && npm install -g tree-sitter-cli@0.24.5 node-addon-api@8.3.1
 
 # Setup the default user.
 RUN useradd -rm -d /home/dev -s /bin/bash -g root -G sudo dev
