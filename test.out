@@ -5,7 +5,7 @@
 #include <iostream>
 
 int main() {
-void* lib_name = dlopen("lib.do", RTLD_LAZY);
+void* lib_name = dlopen("lib.so", RTLD_LAZY);
 int variable = *(int*)(dlsym(lib_name, "symbolic_variable_name"));
 std::string variablestr = *(std::string*)(dlsym(lib_name, "symbolic_string_variable_name"));
 int varnum = 5;
