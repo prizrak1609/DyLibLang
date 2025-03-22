@@ -1,5 +1,5 @@
 // lib.so contains symbolic_variable_name and symbolic_function_name
-load lib.do as lib_name
+load lib.so as lib_name
 variable : int = lib_name.symbolic_variable_name
 variablestr : std::string = lib_name.symbolic_string_variable_name
 varnum : int = 5
