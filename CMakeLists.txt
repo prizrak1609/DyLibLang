@@ -21,6 +21,7 @@ find_package(tree-sitter REQUIRED)
 list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 
 include(AddLLVM)
+# include(AddMLIR)
 
 add_executable(DyLibLang src/main.cpp
         src/parser.c
